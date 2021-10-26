@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 private var idCounter:Int = 0
 private func uniqueID()->Int { idCounter += 1; return idCounter }
 
@@ -26,29 +27,25 @@ public struct HelpContent:Identifiable{
     }
 }
 
-@available(iOS 14.0, macOS 11.0, *)
+
 public struct SimpleHelpView: View {
     public var content:HelpContent
     var level:Int = 0
-    
-    public init(content:HelpContent){self.content = content}
-    public init(bundleResource resource:String){
-        self.init(content: HelpContent(bundleResource: resource) )
-    }
-    
     
     public var body: some View{
         let title = content.id.first == "@" ? "" : content.id
         let contentView = ForEach(content.contents){ obj in
             SimpleHelpView(content: obj, level:level+1)
         }
-        if content.contents.isEmpty { Text(title) }
-        else if level == 0 { List{ contentView }.navigationTitle(title) }
-        else if level % 2 == 1 {
-            Section(content:{ contentView },header:{Text(title)})
-        }
-        else if level % 2 == 0 {
-            NavigationLink.init(title, destination: { List{ contentView }.navigationTitle(title) })
-        }
+         if content.contents.isEmpty { Text(title) }
+         else if level == 0 { List{ contentView }.navigationTitle(title) }
+         else if level % 2 == 1 {
+             Section(content:{ contentView }, header: {Text(title) } )
+         }
+         else if level % 2 == 0 {
+             NavigationLink(title, destination: {
+                 List{ contentView }.navigationTitle(title)
+             })
+         }
     }
 }

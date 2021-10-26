@@ -29,11 +29,16 @@ public struct HelpContent:Identifiable{
 
 
 public struct SimpleHelpView: View {
-    public var content:HelpContent
-    var level:Int = 0
+    var content:HelpContent
+    var level:Int
     
+    
+    init(content:HelpContent, level:Int = 0){
+        self.content = content
+        self.level = level
+    }
     public init(bundleResource:String){
-        content = HelpContent(bundleResource: bundleResource)
+       self.init(content: HelpContent(bundleResource: bundleResource) )
     }
     
     public var body: some View{
@@ -44,12 +49,10 @@ public struct SimpleHelpView: View {
          if content.contents.isEmpty { Text(title) }
          else if level == 0 { List{ contentView }.navigationTitle(title) }
          else if level % 2 == 1 {
-             Section(content:{ contentView }, header: {Text(title) } )
+             Section(header: Text(title), content: { contentView })
          }
          else if level % 2 == 0 {
-             NavigationLink(title, destination: {
-                 List{ contentView }.navigationTitle(title)
-             })
+             NavigationLink.init(title, destination: List{ contentView }.navigationTitle(title) )
          }
     }
 }

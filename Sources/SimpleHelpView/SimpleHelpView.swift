@@ -32,6 +32,10 @@ public struct SimpleHelpView: View {
     public var content:HelpContent
     var level:Int = 0
     
+    public init(bundleResource:String){
+        content = HelpContent(bundleResource: bundleResource)
+    }
+    
     public var body: some View{
         let title = content.id.first == "@" ? "" : content.id
         let contentView = ForEach(content.contents){ obj in

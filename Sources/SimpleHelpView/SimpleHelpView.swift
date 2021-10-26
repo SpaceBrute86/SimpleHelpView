@@ -26,14 +26,14 @@ struct HelpContent:Identifiable{
 }
 
 @available(iOS 14.0, macOS 11.0, *)
-struct JSONHelpView: View {
+struct SimpleHelpView: View {
     var content:HelpContent
     var level:Int = 0
     
     var body: some View{
         let title = content.id.first == "@" ? "" : content.id
         let contentView = ForEach(content.contents){ obj in
-            JSONHelpView(content: obj, level:level+1)
+            SimpleHelpView(content: obj, level:level+1)
         }
         if content.contents.isEmpty { Text(title) }
         else if level == 0 { List{ contentView }.navigationTitle(title) }

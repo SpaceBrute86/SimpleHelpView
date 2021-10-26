@@ -1,7 +1,7 @@
 import SwiftUI
 
-private var id:Int = 0
-func uniqueID()->Int { id += 1; return id }
+private var idCounter:Int = 0
+private func uniqueID()->Int { idCounter += 1; return idCounter }
 
 struct HelpContent:Identifiable{
     var id:String = ""
@@ -25,7 +25,7 @@ struct HelpContent:Identifiable{
     }
 }
 
-@available(iOS 14, macOS 11.0, *)
+@available(iOS 14.0, macOS 11.0, *)
 struct JSONHelpView: View {
     var content:HelpContent
     var level:Int = 0
@@ -38,7 +38,7 @@ struct JSONHelpView: View {
         if content.contents.isEmpty { Text(title) }
         else if level == 0 { List{ contentView }.navigationTitle(title) }
         else if level % 2 == 1 {
-            Section(content.id.first == "@" ? "" : content.id){ contentView }
+            Section(content:{ contentView },header:{Text(title)})
         }
         else if level % 2 == 0 {
             NavigationLink.init(title, destination: { List{ contentView }.navigationTitle(title) })
